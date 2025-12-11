@@ -61,3 +61,28 @@ class MountCalculator:
 
         unique_sorted = sorted(unique_mounts.values(), key=lambda mt: (mt.position.x, mt.position.y))
         return unique_sorted
+
+    def collect_mounts_for_all_panels(self, panels: List[Panel], ignore_error: bool = True) -> List[Mount]:
+        """
+        Collect Mounts for all panels and return list of deduplicated, sorted by (x, y) and rounded by 2 decimals Mounts.
+        if ignore_error is True, panels that cannot be mounted will be skipped and warning will be printed.
+        If ignore_error is False, the ValueError will be raised in case of error.
+        """
+        if not panels:
+            return []
+
+        all_mounts: List[Mount] = []
+
+        for panel in panels:
+            try:
+                panel_mounts = self.mounts_for_panel(panel)
+            except ValueError as e:
+                if not ignore_error:
+                    raise
+                print(f"Warning: skipping panel with coordinates {panel.top_left} due to: {e}")
+                continue
+            all_mounts.extend(panel_mounts)
+
+        unique_mounts = self.deduplicate_mounts(all_mounts)
+
+        return unique_mounts
