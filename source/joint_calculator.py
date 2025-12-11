@@ -89,3 +89,32 @@ class JointCalculator:
                         shared_joints.append(Joint(position=Point(shared_x, shared_y)))
 
         return shared_joints
+
+    def calculate_joints(self) -> List[Joint]:
+        """
+        Collect all joint in one collection without duplicates. Returns list of Joint
+        """
+        rows = self._group_panels_into_row()
+        if not rows:
+            return []
+
+        all_joints: List[Joint] = []
+
+        for row in rows:
+            horizontal_joints = self._horizontal_joints_in_row(row)
+            if horizontal_joints:
+                all_joints.extend(horizontal_joints)
+
+        for upper_row, lower_row in zip(rows, rows[1:]):
+            shared_joints = self._shared_joints_between_rows(upper_row, lower_row)
+            if shared_joints:
+                all_joints.extend(shared_joints)
+
+        unique_joints = {}
+
+        for joint in all_joints:
+            key = self.rounded_coord(joint, 2)
+            if key not in unique_joints:
+                unique_joints[key] = Joint(position=Point(round(joint.position.x, 2), round(joint.position.y, 2)))
+
+        return list(unique_joints.values())
