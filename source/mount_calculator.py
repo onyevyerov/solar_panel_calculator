@@ -43,3 +43,21 @@ class MountCalculator:
             mounts.append(Mount(position=Point(x, panel.bottom)))
 
         return mounts
+
+    @staticmethod
+    def deduplicate_mounts(mounts: List[Mount]) -> List[Mount]:
+        """
+        Delete duplicates from a list of mounts. Returns list with unique mounts.
+        """
+        if not mounts:
+            return []
+
+        unique_mounts = {}
+
+        for mount in mounts:
+            key = (round(mount.position.x, 2), round(mount.position.y, 2))
+            if key not in unique_mounts:
+                unique_mounts[key] = Mount(position=Point(key[0], key[1]))
+
+        unique_sorted = sorted(unique_mounts.values(), key=lambda mt: (mt.position.x, mt.position.y))
+        return unique_sorted
