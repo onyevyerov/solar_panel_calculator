@@ -11,8 +11,14 @@ class SolarPanelCalculator:
     def __init__(self, panels: List[Panel]):
         self.panels = panels
 
-
     def calculate(self) -> dict:
+        """
+        Compute mounts and joints for the current panel layout.
+
+        Returns:
+            dict: JSON-ready structure with unique mount points and joint points
+            (each rounded to two decimals).
+        """
         rafter = RafterGrid()
         all_rafters = rafter.generate_grid(self.panels)
 
