@@ -48,7 +48,7 @@ class JointCalculator:
     @staticmethod
     def rounded_coord(joint: Joint, digits=2):
         """
-        Method to round Joint coordinates to 2 digits after coma
+        Method to round Joint coordinates to N digits after coma
         """
         return (
             round(joint.position.x, digits),
@@ -67,12 +67,12 @@ class JointCalculator:
 
         top_row_bottom_joints = [
             joint for joint in top_row_joints
-            if abs(joint.position.y - top_row[0].bottom) < JOINT_GAP_THRESHOLD
+            if abs(joint.position.y - top_row[0].bottom) < JOINT_GAP_THRESHOLD # checking is it lower joints of top row panels
         ]
 
         bottom_row_top_joints = [
             joint for joint in bottom_row_joints
-            if abs(joint.position.y - bottom_row[0].top) < JOINT_GAP_THRESHOLD
+            if abs(joint.position.y - bottom_row[0].top) < JOINT_GAP_THRESHOLD # checking is it upper joins of bottom row panels
         ]
 
         shared_joints: List[Joint] = []
@@ -90,9 +90,29 @@ class JointCalculator:
 
         return shared_joints
 
+
+    def _deduplicate_joints(self, joints: List[Joint], digits: int = 2) -> List[Joint]:
+        """
+        Remove duplicated Joint objects by rounding coordinates to N decimal places.
+        Returns a list of unique Joint instances.
+
+        :param joints: list of Joint objects (possibly with duplicates)
+        :param digits: number of digits used for coordinate rounding
+        """
+        unique = {}
+
+        for joint in joints:
+            key = self.rounded_coord(joint, digits)
+            if key not in unique:
+                unique[key] = Joint(
+                    position=Point(key[0], key[1])
+                )
+
+        return list(unique.values())
+
     def calculate_joints(self) -> List[Joint]:
         """
-        Collect all joint in one collection without duplicates. Returns list of Joint
+        Collect all joint in one collection without duplicates. Returns list of Joint or empty list.
         """
         rows = self._group_panels_into_row()
         if not rows:
@@ -110,11 +130,4 @@ class JointCalculator:
             if shared_joints:
                 all_joints.extend(shared_joints)
 
-        unique_joints = {}
-
-        for joint in all_joints:
-            key = self.rounded_coord(joint, 2)
-            if key not in unique_joints:
-                unique_joints[key] = Joint(position=Point(round(joint.position.x, 2), round(joint.position.y, 2)))
-
-        return list(unique_joints.values())
+        return self._deduplicate_joints(all_joints)
