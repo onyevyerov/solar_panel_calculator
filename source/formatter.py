@@ -4,7 +4,7 @@ from source.domain import Mount, Joint
 
 
 class OutputFormatter:
-    """Formatting utilities: convert domain objects to primitive JSON-friendly structures."""
+    """Convert domain objects(Mount, Joint) to primitive JSON-friendly structures."""
 
     @staticmethod
     def mount_to_dict(mount: Mount) -> dict:
