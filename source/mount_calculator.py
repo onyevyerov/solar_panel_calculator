@@ -17,7 +17,7 @@ class MountCalculator:
 
         possible_rafters = [
             x for x in self.rafters_x_coordinates
-            if allowed_min_x <= x <= allowed_max_x
+            if allowed_min_x <= x <= allowed_max_x # checking if the rafter not closer than 2 units(EDGE_CLEARANCE) to the edge of panel
         ]
 
         if not possible_rafters:
