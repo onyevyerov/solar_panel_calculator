@@ -95,9 +95,6 @@ class JointCalculator:
         """
         Remove duplicated Joint objects by rounding coordinates to N decimal places.
         Returns a list of unique Joint instances.
-
-        :param joints: list of Joint objects (possibly with duplicates)
-        :param digits: number of digits used for coordinate rounding
         """
         unique = {}
 
