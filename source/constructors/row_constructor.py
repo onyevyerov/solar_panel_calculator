@@ -9,6 +9,12 @@ class RowConstructor:
         self.panels = panels
 
     def group_panels_into_row(self) -> List[List[Panel]]:
+        """
+        Group panels into rows by Y coordinate.
+
+        Returns:
+            List[List[Panel]]: List of panels. [[Panel, Panel], [Panel, Panel]]
+        """
         if not self.panels:
             return []
 
