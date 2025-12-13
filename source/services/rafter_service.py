@@ -11,7 +11,14 @@ class RafterGrid:
 
     def generate_grid(self, panels: List[Panel]) -> list[float]:
         """
-        Return x coordinates of all rafters in the grid. Returns empty list if there are no Panels.
+        Generate and returns X-coordinates of all rafters in the grid.
+        Returns empty list if there are no Panels.
+
+        Args:
+            panels: List of Panels.
+
+        Returns:
+            List[float]: List of X-coordinates.
         """
         if not panels:
             return []
