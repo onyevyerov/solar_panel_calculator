@@ -1,8 +1,8 @@
 import json
 from typing import List
 
+from source.calculators.solar_panel_calculator import SolarPanelCalculator
 from source.domain import Panel, Point
-from source.calculators import SolarPanelCalculator
 
 
 def load_panels_from_file(path: str) -> List[Panel]:
@@ -24,6 +24,12 @@ def load_panels_from_file(path: str) -> List[Panel]:
 def main():
     """
     Loads panels from file, runs the solar panel calculator, and prints results.
+
+    Returns:
+        JSON: {
+            'mounts': [],
+            'joints': []
+        }
     """
     panels = load_panels_from_file("examples/sample_input.json")
     result = SolarPanelCalculator(panels).calculate()
