@@ -25,9 +25,16 @@ class JointCalculator:
         return joints
 
     @staticmethod
-    def rounded_coord(joint: Joint, digits=2):
+    def rounded_coord(joint: Joint, digits: int = 2) -> tuple:
         """
         Method to round Joint coordinates to N digits after coma
+
+        Args:
+            joint: Joint,
+            digits: int
+
+        Returns:
+            Tuple[float, float]
         """
         return (
             round(joint.position.x, digits),
@@ -89,6 +96,9 @@ class JointCalculator:
     def calculate_joints(self) -> List[Joint]:
         """
         Collect all joint in one collection without duplicates. Returns list of Joint or empty list.
+
+        Returns:
+            List[Joint]
         """
         row_constructor = RowConstructor(self.panels)
         rows = row_constructor.group_panels_into_row()
