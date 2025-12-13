@@ -10,7 +10,14 @@ class SegmentConstructor:
         self.panels = panels
 
 
-    def group_rows_into_segments(self) -> List[List[Panel]]:
+    def divide_rows_into_segments(self) -> List[List[Panel]]:
+        """
+        Divide rows into segments.
+        A segment consists of panels whose distance between adjacent panels does not exceed CONTINUOUS_GAP.
+
+        Returns:
+            List[List[Panel]]: List of segments with Panels -> [Segment[Panel]]
+        """
         if not self.panels:
             return []
 
