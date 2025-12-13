@@ -2,7 +2,7 @@ import json
 from typing import List
 
 from source.domain import Panel, Point
-from source.service import SolarPanelCalculator
+from calculators.solar_panel_calculator import SolarPanelCalculator
 
 
 def load_panels_from_file(path: str) -> List[Panel]:
