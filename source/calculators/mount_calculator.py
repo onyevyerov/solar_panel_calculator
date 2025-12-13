@@ -11,6 +11,12 @@ class MountCalculator:
     def mounts_for_panel(self, panel: Panel) -> list[Mount]:
         """
         Return list of mounts coordinates for one panel
+
+        Args:
+            panel: Panel
+
+        Returns:
+            List[Mount]
         """
         possible_mounts = self.mount_service.get_mounts_for_panel(panel)
 
@@ -29,6 +35,12 @@ class MountCalculator:
     def deduplicate_mounts(mounts: List[Mount]) -> List[Mount]:
         """
         Delete duplicates from a list of mounts. Returns list with unique mounts.
+
+        Args:
+            mounts: List[Mount]
+
+        Returns:
+            List[Mount]
         """
         if not mounts:
             return []
@@ -48,6 +60,13 @@ class MountCalculator:
         Collect Mounts for all panels and return list of deduplicated, sorted by (x, y) and rounded by 2 decimals Mounts.
         if ignore_error is True, panels that cannot be mounted will be skipped and warning will be printed.
         If ignore_error is False, the ValueError will be raised in case of error.
+
+        Args:
+            panels: List[Panel]
+            ignore_error: bool, condition to ignore errors
+
+        Returns:
+            List[Mount]
         """
         if not panels:
             return []
