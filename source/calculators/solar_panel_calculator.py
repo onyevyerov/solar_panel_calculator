@@ -24,7 +24,7 @@ class SolarPanelCalculator:
         """
         rafters = RafterGrid().generate_grid(self.panels)
 
-        segments = SegmentConstructor(self.panels).group_rows_into_segments()
+        segments = SegmentConstructor(self.panels).divide_rows_into_segments()
 
         mount_calculator = MountCalculator(rafters)
 
