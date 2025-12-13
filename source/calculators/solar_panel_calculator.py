@@ -3,8 +3,8 @@ from typing import List
 from source.constructors.segment_constructor import SegmentConstructor
 from source.domain import Panel
 from source.formatter import OutputFormatter
-from calculators.joint_calculator import JointCalculator
-from calculators.mount_calculator import MountCalculator
+from source.calculators.joint_calculator import JointCalculator
+from source.calculators.mount_calculator import MountCalculator
 from source.services.rafter_service import RafterGrid
 from source.validators.cantilever_validator import CantileverValidator
 from source.validators.span_limit_validator import SpanLimitValidator
