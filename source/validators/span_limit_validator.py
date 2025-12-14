@@ -3,9 +3,9 @@ from typing import List
 from source.config import SPAN_LIMIT
 
 
-
 class SpanLimitValidatorError(Exception):
     pass
+
 
 class SpanLimitValidator:
     def __init__(self, span_limit: float = SPAN_LIMIT):

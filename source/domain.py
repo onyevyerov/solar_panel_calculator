@@ -16,6 +16,7 @@ class Mount:
     def __repr__(self) -> str:
         return f"Mount({self.position.x}, {self.position.y})"
 
+
 @dataclass(frozen=True)
 class Joint:
     position: Point

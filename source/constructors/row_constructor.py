@@ -18,7 +18,7 @@ class RowConstructor:
         if not self.panels:
             return []
 
-        sorted_panels = sorted(self.panels, key=lambda p: p.top) # sorting panels by Y
+        sorted_panels = sorted(self.panels, key=lambda p: p.top)  # sorting panels by Y
 
         rows: List[List[Panel]] = []
         current_row: List[Panel] = [sorted_panels[0]]
@@ -27,11 +27,13 @@ class RowConstructor:
             if abs(panel.top - current_row[0].top) <= JOINT_GAP_THRESHOLD:
                 current_row.append(panel)
             else:
-                current_row.sort(key=lambda p: p.left) # sorting panels by X before adding them to row
+                current_row.sort(
+                    key=lambda p: p.left
+                )  # sorting panels by X before adding them to row
                 rows.append(current_row)
                 current_row = [panel]
 
-        current_row.sort(key=lambda p: p.left) # sorting panels by X in last row
+        current_row.sort(key=lambda p: p.left)  # sorting panels by X in last row
         rows.append(current_row)
 
         return rows

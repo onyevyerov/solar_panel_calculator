@@ -9,7 +9,6 @@ class SegmentConstructor:
     def __init__(self, panels: List[Panel]):
         self.panels = panels
 
-
     def divide_rows_into_segments(self) -> List[List[Panel]]:
         """
         Divide rows into segments.

@@ -3,10 +3,10 @@ from source.domain import Panel, Point
 from typing import List
 
 
-
 def create_panel(x: float, y: float) -> Panel:
     """Helper to create a Panel instance with default size."""
     return Panel(top_left=Point(x, y))
+
 
 def test_single_row_single_segment_required():
     """Tests that a single row with small gaps (0.35 and 0.05) is grouped into one segment.
@@ -14,8 +14,8 @@ def test_single_row_single_segment_required():
     P2 (45.05) -> P3 (90.1): Gap 0.35 (<= 1.0) -> Grouped."""
     panels = [
         create_panel(0.0, 0.0),
-        create_panel(45.05, 0.0), # gap 0.35
-        create_panel(90.1, 0.0), # gap 0,35
+        create_panel(45.05, 0.0),  # gap 0.35
+        create_panel(90.1, 0.0),  # gap 0,35
     ]
 
     constructor = SegmentConstructor(panels)
@@ -30,10 +30,7 @@ def test_single_row_single_segment_required():
 def test_single_row_multiple_segments():
     """Tests that a row with a large gap is split into two separate segments.
     P1 (0.0) -> P2 (46.0): Gap 1.3 (> 1.0) -> SPLIT."""
-    panels = [
-        create_panel(0.0, 0.0),  # gap 1.3
-        create_panel(46.0, 0.0)  # segment 2
-    ]
+    panels = [create_panel(0.0, 0.0), create_panel(46.0, 0.0)]  # gap 1.3  # segment 2
 
     constructor = SegmentConstructor(panels)
     actual_segments: List[List[Panel]] = constructor.divide_rows_into_segments()
@@ -68,7 +65,7 @@ def test_multiple_rows_separate_segments():
     """Tests that panels in different vertical rows are correctly treated as separate segments."""
     panels = [
         create_panel(0.0, 0.0),  # Segment 1 (Row 1)
-        create_panel(0.0, 71.6)  # Segment 2 (Row 2)
+        create_panel(0.0, 71.6),  # Segment 2 (Row 2)
     ]
 
     constructor = SegmentConstructor(panels)

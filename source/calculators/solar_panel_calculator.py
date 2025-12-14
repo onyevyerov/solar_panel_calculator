@@ -6,8 +6,14 @@ from source.formatter import OutputFormatter
 from source.calculators.joint_calculator import JointCalculator
 from source.calculators.mount_calculator import MountCalculator
 from source.services.rafter_service import RafterGrid
-from source.validators.cantilever_validator import CantileverValidator, CantileverValidatorError
-from source.validators.span_limit_validator import SpanLimitValidator, SpanLimitValidatorError
+from source.validators.cantilever_validator import (
+    CantileverValidator,
+    CantileverValidatorError,
+)
+from source.validators.span_limit_validator import (
+    SpanLimitValidator,
+    SpanLimitValidatorError,
+)
 
 
 class SolarPanelCalculator:
@@ -33,12 +39,16 @@ class SolarPanelCalculator:
             mount_calculator = MountCalculator(rafters)
 
             for segment in segments:
-                mounts_x = mount_calculator.mount_service.get_mounts_for_segment(segment)
+                mounts_x = mount_calculator.mount_service.get_mounts_for_segment(
+                    segment
+                )
 
                 CantileverValidator().validate(segment, mounts_x)
 
                 for panel in segment:
-                    panel_mounts_x = mount_calculator.mount_service.get_mounts_for_panel(panel)
+                    panel_mounts_x = (
+                        mount_calculator.mount_service.get_mounts_for_panel(panel)
+                    )
 
                     SpanLimitValidator().validate(panel_mounts_x)
 
@@ -55,17 +65,17 @@ class SolarPanelCalculator:
             return {
                 "status": "ERROR",
                 "message": f"Cantilever Limit violated: {e}",
-                "details": "The distance from the segment edge to the first/last support exceeds 16.0 units."
+                "details": "The distance from the segment edge to the first/last support exceeds 16.0 units.",
             }
         except SpanLimitValidatorError as e:
             return {
                 "status": "ERROR",
                 "message": f"Span Limit violated: {e}",
-                "details": "The distance between two consecutive supports exceeds 48.0 units."
+                "details": "The distance between two consecutive supports exceeds 48.0 units.",
             }
         except Exception as e:
             return {
                 "status": "ERROR",
                 "message": "An unexpected error occurred during calculation.",
-                "details": str(e)
+                "details": str(e),
             }

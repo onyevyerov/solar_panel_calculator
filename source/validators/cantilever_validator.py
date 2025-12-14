@@ -4,14 +4,14 @@ from source.config import CANTILEVER_LIMIT
 from source.domain import Panel
 
 
-
 class CantileverValidatorError(ValueError):
     pass
 
+
 class CantileverValidator:
     def __init__(
-            self,
-            cantilevers_limit: float = CANTILEVER_LIMIT,
+        self,
+        cantilevers_limit: float = CANTILEVER_LIMIT,
     ):
         self.cantilevers_limit = cantilevers_limit
 

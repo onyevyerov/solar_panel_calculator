@@ -25,7 +25,8 @@ class MountService:
         max_allowed_x = panel.right - EDGE_CLEARANCE
 
         mounts = [
-            x for x in self.mounts_x_coordinates
+            x
+            for x in self.mounts_x_coordinates
             # checking if the mount not closer than 2 units(EDGE_CLEARANCE) to the edge of panel
             if min_allowed_x <= x <= max_allowed_x
         ]
@@ -42,7 +43,7 @@ class MountService:
         Returns:
             List[float]: List of mounts X-coordinates.
         """
-        mounts: Set[float]= set()
+        mounts: Set[float] = set()
 
         for panel in segment:
             panel_mounts_x = self.get_mounts_for_panel(panel)

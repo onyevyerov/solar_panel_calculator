@@ -15,12 +15,12 @@ class JointCalculator:
 
         joints: List[Joint] = []
 
-        for a, b in zip(row, row[1:]):
-            gap = b.left - a.right
+        for panel_a, panel_b in zip(row, row[1:]):
+            gap = panel_b.left - panel_a.right
             if abs(gap) < JOINT_GAP_THRESHOLD:
-                joint_x = round((a.right + b.left) / 2, 2)
-                joints.append(Joint(position=Point(joint_x, round(a.top, 2))))
-                joints.append(Joint(position=Point(joint_x, round(a.bottom, 2))))
+                joint_x = round((panel_a.right + panel_b.left) / 2, 2)
+                joints.append(Joint(position=Point(joint_x, round(panel_a.top, 2))))
+                joints.append(Joint(position=Point(joint_x, round(panel_a.bottom, 2))))
 
         return joints
 
@@ -36,12 +36,11 @@ class JointCalculator:
         Returns:
             Tuple[float, float]
         """
-        return (
-            round(joint.position.x, digits),
-            round(joint.position.y, digits)
-        )
+        return (round(joint.position.x, digits), round(joint.position.y, digits))
 
-    def _shared_joints_between_rows(self, top_row: List[Panel], bottom_row: List[Panel]) -> List[Joint]:
+    def _shared_joints_between_rows(
+        self, top_row: List[Panel], bottom_row: List[Panel]
+    ) -> List[Joint]:
         if not top_row or not bottom_row:
             return []
 
@@ -52,13 +51,17 @@ class JointCalculator:
         bottom_row_joints = self._horizontal_joints_in_row(bottom_row)
 
         top_row_bottom_joints = [
-            joint for joint in top_row_joints
-            if abs(joint.position.y - top_row[0].bottom) < JOINT_GAP_THRESHOLD # checking is it lower joints of top row panels
+            joint
+            for joint in top_row_joints
+            if abs(joint.position.y - top_row[0].bottom)
+            < JOINT_GAP_THRESHOLD  # checking is it lower joints of top row panels
         ]
 
         bottom_row_top_joints = [
-            joint for joint in bottom_row_joints
-            if abs(joint.position.y - bottom_row[0].top) < JOINT_GAP_THRESHOLD # checking is it upper joins of bottom row panels
+            joint
+            for joint in bottom_row_joints
+            if abs(joint.position.y - bottom_row[0].top)
+            < JOINT_GAP_THRESHOLD  # checking is it upper joins of bottom row panels
         ]
 
         shared_joints: List[Joint] = []
@@ -76,7 +79,6 @@ class JointCalculator:
 
         return shared_joints
 
-
     def _deduplicate_joints(self, joints: List[Joint], digits: int = 2) -> List[Joint]:
         """
         Remove duplicated Joint objects by rounding coordinates to N decimal places.
@@ -87,9 +89,7 @@ class JointCalculator:
         for joint in joints:
             key = self.rounded_coord(joint, digits)
             if key not in unique:
-                unique[key] = Joint(
-                    position=Point(key[0], key[1])
-                )
+                unique[key] = Joint(position=Point(key[0], key[1]))
 
         return list(unique.values())
 

@@ -21,7 +21,7 @@ def load_panels_from_file(path: str) -> List[Panel]:
     return [Panel(top_left=Point(p["x"], p["y"])) for p in data["panels"]]
 
 
-def main():
+def main() -> None:
     """
     Loads panels from file, runs the solar panel calculator, and prints results.
 
