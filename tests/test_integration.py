@@ -13,9 +13,18 @@ MINIMAL_PANELS_INPUT = [
 
 @pytest.fixture
 def minimal_panels():
+    """Returns a list of Panel objects from the minimal input configuration."""
     return [Panel(top_left=Point(p["x"], p["y"])) for p in MINIMAL_PANELS_INPUT]
 
 def test_full_calculation_with_minimal_data(minimal_panels):
+    """Tests the full end-to-end calculation flow for a minimal, valid two-row configuration.
+
+    Verifies:
+    -No critical exceptions are raised during calculation.
+    -Correct Mount positions are found and included (respecting Edge Clearance).
+    -Correct Horizontal Joints are found (where gap < 1.0).
+    -Correct Shared Joints are found (vertical alignment).
+    -Incorrect joints (where gap > 1.0) are correctly excluded."""
     calculator = SolarPanelCalculator(minimal_panels)
 
     try:
@@ -62,8 +71,8 @@ def test_full_calculation_with_minimal_data(minimal_panels):
     assert expected_joint_horiz_top in joints, "Missing Horizontal Joint (P1-P2, Top)"
     assert expected_joint_horiz_bottom in joints, "Missing Horizontal Joint (P1-P2, Bottom)"
 
-    # Missing Horizontal Junction (between P2 and P3): Gap 1.25.
-    # Checks that the junction point (X=90.38) is missing (or excluded).
+    # Missing Horizontal Joint (between P2 and P3): Gap 1.25.
+    # Checks that the Joint point (X=90.38) is missing (or excluded).
     joint_not_expected = {'x': 90.38, 'y': 0.0}
     assert joint_not_expected not in joints, "Joint found where gap > 1.0 (P2-P3)"
 
