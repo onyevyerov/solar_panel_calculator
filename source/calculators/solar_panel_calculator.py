@@ -6,8 +6,8 @@ from source.formatter import OutputFormatter
 from source.calculators.joint_calculator import JointCalculator
 from source.calculators.mount_calculator import MountCalculator
 from source.services.rafter_service import RafterGrid
-from source.validators.cantilever_validator import CantileverValidator
-from source.validators.span_limit_validator import SpanLimitValidator
+from source.validators.cantilever_validator import CantileverValidator, CantileverValidatorError
+from source.validators.span_limit_validator import SpanLimitValidator, SpanLimitValidatorError
 
 
 class SolarPanelCalculator:
@@ -22,26 +22,50 @@ class SolarPanelCalculator:
             dict: JSON-ready structure with unique mount points and joint points
             (each rounded to two decimals).
         """
-        rafters = RafterGrid().generate_grid(self.panels)
+        if not self.panels:
+            return {"mounts": [], "joints": []}
 
-        segments = SegmentConstructor(self.panels).divide_rows_into_segments()
+        try:
+            rafters = RafterGrid().generate_grid(self.panels)
 
-        mount_calculator = MountCalculator(rafters)
+            segments = SegmentConstructor(self.panels).divide_rows_into_segments()
 
-        for segment in segments:
-            mounts_x = mount_calculator.mount_service.get_mounts_for_segment(segment)
+            mount_calculator = MountCalculator(rafters)
 
-            CantileverValidator().validate(segment, mounts_x)
-            for panel in segment:
-                panel_mounts_x = mount_calculator.mount_service.get_mounts_for_panel(panel)
-                SpanLimitValidator().validate(panel_mounts_x)
+            for segment in segments:
+                mounts_x = mount_calculator.mount_service.get_mounts_for_segment(segment)
 
-        all_mounts = mount_calculator.collect_mounts_for_all_panels(self.panels)
+                CantileverValidator().validate(segment, mounts_x)
 
-        joint_calculator = JointCalculator(self.panels)
-        all_joints = joint_calculator.calculate_joints()
+                for panel in segment:
+                    panel_mounts_x = mount_calculator.mount_service.get_mounts_for_panel(panel)
 
-        return {
-            "mounts": OutputFormatter.mounts_to_list(all_mounts),
-            "joints": OutputFormatter.joints_to_list(all_joints),
-        }
+                    SpanLimitValidator().validate(panel_mounts_x)
+
+            all_mounts = mount_calculator.collect_mounts_for_all_panels(self.panels)
+
+            joint_calculator = JointCalculator(self.panels)
+            all_joints = joint_calculator.calculate_joints()
+
+            return {
+                "mounts": OutputFormatter.mounts_to_list(all_mounts),
+                "joints": OutputFormatter.joints_to_list(all_joints),
+            }
+        except CantileverValidatorError as e:
+            return {
+                "status": "ERROR",
+                "message": f"Cantilever Limit violated: {e}",
+                "details": "The distance from the segment edge to the first/last support exceeds 16.0 units."
+            }
+        except SpanLimitValidatorError as e:
+            return {
+                "status": "ERROR",
+                "message": f"Span Limit violated: {e}",
+                "details": "The distance between two consecutive supports exceeds 48.0 units."
+            }
+        except Exception as e:
+            return {
+                "status": "ERROR",
+                "message": "An unexpected error occurred during calculation.",
+                "details": str(e)
+            }
