@@ -1,3 +1,19 @@
+## 🚀 Key Features
+
+● Mount Calculation Engine: Automatically determines support positions by aligning panels with vertical rafters (16-unit spacing).
+
+● Structural Constraint Validation: Implements rigorous engineering rules, including:
+
+● Edge Clearance: Minimum 2-unit offset from panel boundaries.
+
+● Cantilever Limits: Maximum 16-unit overhang for continuous segments.
+
+● Span Optimization: Ensures distance between supports never exceeds 48 units.
+
+● Smart Joint Logic: Identifies horizontal and vertical connections between adjacent panels, supporting multi-row shared joints (up to 4 panels) to minimize hardware usage.
+
+● Modular Architecture: Built using SOLID principles for high extensibility and maintainability.
+
 ## How to Setup and Run the Application
 
 ### 1. Clone the Repository
