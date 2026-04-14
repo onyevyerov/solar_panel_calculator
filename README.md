@@ -13,7 +13,36 @@
 ● Smart Joint Logic: Identifies horizontal and vertical connections between adjacent panels, supporting multi-row shared joints (up to 4 panels) to minimize hardware usage.
 
 ● Modular Architecture: Built using SOLID principles for high extensibility and maintainability.
+## Architecture
 
+```mermaid
+graph TD
+    A[main.py] --> B[SolarPanelCalculator]
+
+    B --> C[RowConstructor]
+    B --> D[MountCalculator]
+    B --> E[JointCalculator]
+    B --> F[Formatter]
+
+    C --> G[SegmentConstructor]
+
+    D --> H[RafterService]
+    D --> I[MountService]
+    D --> J[CantileverValidator]
+    D --> K[SpanLimitValidator]
+
+    style A fill:#2d2d2d,stroke:#58a6ff,color:#fff
+    style B fill:#1a3a5c,stroke:#58a6ff,color:#fff
+    style D fill:#1a3a5c,stroke:#58a6ff,color:#fff
+    style E fill:#1a3a5c,stroke:#58a6ff,color:#fff
+    style C fill:#2a4a3a,stroke:#3fb950,color:#fff
+    style G fill:#2a4a3a,stroke:#3fb950,color:#fff
+    style H fill:#3a3a2a,stroke:#d29922,color:#fff
+    style I fill:#3a3a2a,stroke:#d29922,color:#fff
+    style J fill:#3a2a2a,stroke:#f85149,color:#fff
+    style K fill:#3a2a2a,stroke:#f85149,color:#fff
+    style F fill:#2d2d2d,stroke:#58a6ff,color:#fff
+```
 ## How to Setup and Run the Application
 
 ### 1. Clone the Repository
