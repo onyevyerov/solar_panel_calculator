@@ -1,0 +1,18 @@
+[project]
+name = "solar-panel-calculator"
+version = "1.0.0"
+description = "Algorithmic engine for calculating structural mount positions and inter-panel joints for solar arrays"
+requires-python = ">=3.10"
+authors = [
+    {name = "Oleg Nyevyerov", email = "oleg.nyevyerov@gmail.com"}
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
